@@ -40,7 +40,7 @@ HEART_ANIMATION_FRAMES = [
 # Все взаимодействия с иконками
 INLINE_ACTIONS = {
     "поцеловать": {"emoji": "💋", "description": "Послать нежный поцелуй", "action": "kiss"},
-    "обнять": {"emoji": "🤗", "description": "Отправить теплые объятия", "action": "hug"}, 
+    "обнять": {"emoji": "🤗", "description": "Отправить теплые объятия", "action": "hug"},
     "погладить": {"emoji": "🖐️", "description": "Погладить по головке", "action": "pat"},
     "прижаться": {"emoji": "🫂", "description": "Прижаться и обниматься", "action": "cuddle"},
     "люблю": {"emoji": "💌", "description": "Признаться в любви", "action": "love"},
@@ -145,12 +145,13 @@ ACTION_TEXTS = {
 animation_jobs = {}
 
 # ========================
-#  БАЗА ДАННЫХ
+# БАЗА ДАННЫХ
 # ========================
+
 def init_db():
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
-    
+
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
         user_id INTEGER PRIMARY KEY,
@@ -160,7 +161,7 @@ def init_db():
         registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
-    
+
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS anonymous_notes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -170,7 +171,7 @@ def init_db():
         sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
-    
+
     conn.commit()
     conn.close()
 
@@ -184,14 +185,14 @@ def register_user(user):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users WHERE user_id = ?', (user.id,))
     existing_user = cursor.fetchone()
-    
+
     if not existing_user:
         cursor.execute('''
         INSERT INTO users (user_id, username, first_name, full_name)
         VALUES (?, ?, ?, ?)
         ''', (user.id, user.username, user.first_name, user.full_name))
         conn.commit()
-    
+
     conn.close()
 
 def find_user_id(username):
@@ -209,7 +210,7 @@ def get_user_info(user_id):
     cursor.execute('SELECT * FROM users WHERE user_id = ?', (user_id,))
     user = cursor.fetchone()
     conn.close()
-    
+
     if user:
         return {
             'user_id': user['user_id'],
@@ -222,7 +223,7 @@ def get_user_info(user_id):
 def add_anonymous_note(sender_id, recipient_id, message_text):
     conn = get_db_connection()
     cursor = conn.cursor()
-    
+
     try:
         cursor.execute('''
         INSERT INTO anonymous_notes (sender_id, recipient_id, message_text)
@@ -237,8 +238,9 @@ def add_anonymous_note(sender_id, recipient_id, message_text):
         conn.close()
 
 # ========================
-#  АНИМАЦИЯ СЕРДЦА
+# АНИМАЦИЯ СЕРДЦА
 # ========================
+
 async def safe_edit_message(context, chat_id, message_id, text, reply_markup=None):
     try:
         await context.bot.edit_message_text(
@@ -275,31 +277,31 @@ async def send_heart(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     chat_id = update.effective_chat.id
     register_user(user)
-    
+
     # Останавливаем предыдущую анимацию
     if chat_id in animation_jobs:
         old_job = animation_jobs[chat_id]
         old_job.schedule_removal()
         animation_jobs.pop(chat_id, None)
         await asyncio.sleep(0.5)
-    
+
     # Создаем клавиатуру с 2 кнопками
     keyboard = [
         [InlineKeyboardButton("💖 Ответить взаимностью", callback_data="heart_respond")],
         [InlineKeyboardButton("❌ Отказаться", callback_data="heart_reject")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    
+
     # Отправляем начальное сообщение
     msg = await context.bot.send_message(
         chat_id=chat_id,
         text="❤️\nЯ тебя люблю <3",
         reply_markup=reply_markup
     )
-    
+
     # Создаем итератор кадров
     frame_iterator = itertools.cycle(HEART_ANIMATION_FRAMES)
-    
+
     # Запускаем анимацию
     job = context.job_queue.run_repeating(
         animate_hearts,
@@ -313,23 +315,23 @@ async def send_heart(update: Update, context: ContextTypes.DEFAULT_TYPE):
         },
         name=f"heart_anim_{chat_id}"
     )
-    
+
     # Сохраняем ссылку на задание
     animation_jobs[chat_id] = job
 
 async def handle_heart_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
+
     user = query.from_user
     chat_id = query.message.chat_id
-    
+
     # Останавливаем анимацию
     if chat_id in animation_jobs:
         job = animation_jobs[chat_id]
         job.schedule_removal()
         animation_jobs.pop(chat_id, None)
-    
+
     if query.data == "heart_respond":
         await query.edit_message_text(
             f"💖 {user.first_name} ответил(а) взаимностью на признание в любви! 💕"
@@ -340,12 +342,13 @@ async def handle_heart_response(update: Update, context: ContextTypes.DEFAULT_TY
         )
 
 # ========================
-#  АНОНИМНЫЕ ЗАПИСКИ
+# АНОНИМНЫЕ ЗАПИСКИ
 # ========================
+
 async def start_anonymous_note(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     register_user(user)
-    
+
     if not context.args:
         await update.message.reply_text(
             "📝 *Анонимные записки*\n\n"
@@ -356,31 +359,31 @@ async def start_anonymous_note(update: Update, context: ContextTypes.DEFAULT_TYP
             parse_mode="Markdown"
         )
         return
-    
+
     if len(context.args) < 2:
         await update.message.reply_text("❌ Укажите username и сообщение!")
         return
-    
+
     username = context.args[0].lstrip('@').strip().lower()
     message_text = ' '.join(context.args[1:])
-    
+
     if len(message_text) > 500:
         await update.message.reply_text("❌ Сообщение слишком длинное (макс. 500 символов)")
         return
-    
+
     target_id = find_user_id(username)
-    
+
     if not target_id:
         await update.message.reply_text(f"❌ Пользователь @{username} не найден.")
         return
-    
+
     if user.id == target_id:
         await update.message.reply_text("❌ Нельзя отправить записку самому себе!")
         return
-    
+
     # Сохраняем записку в базу
     success = add_anonymous_note(user.id, target_id, message_text)
-    
+
     if success:
         # Отправляем уведомление получателю
         try:
@@ -406,12 +409,13 @@ async def start_anonymous_note(update: Update, context: ContextTypes.DEFAULT_TYP
         await update.message.reply_text("❌ Ошибка при отправке записки.")
 
 # ========================
-#  СОВМЕСТИМОСТЬ
+# СОВМЕСТИМОСТЬ
 # ========================
+
 async def start_compatibility(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     register_user(user)
-    
+
     args = context.args
     if not args:
         await update.message.reply_text(
@@ -424,28 +428,28 @@ async def start_compatibility(update: Update, context: ContextTypes.DEFAULT_TYPE
         
     username = args[0].lstrip('@').strip().lower()
     partner_id = find_user_id(username)
-    
+
     if not partner_id:
         await update.message.reply_text(f"Пользователь @{username} не найден.")
         return
-    
+
     if user.id == partner_id:
         await update.message.reply_text("Нельзя проверить совместимость с самим собой! 😉")
         return
         
     user1_info = get_user_info(user.id)
     user2_info = get_user_info(partner_id)
-    
+
     user1_name = user1_info['first_name'] if user1_info else user.first_name
     user2_name = user2_info['first_name'] if user2_info else f"Пользователь {partner_id}"
-    
+
     message = await update.message.reply_text(
         f"🔮 *Расчет совместимости*\n\n"
         f"{user1_name} ❤️ {user2_name}\n\n"
         "▰▰▰▰▰▰▰▰▰ 0%",
         parse_mode="Markdown"
     )
-    
+
     context.job_queue.run_once(
         calculate_compatibility, 
         3, 
@@ -462,11 +466,11 @@ async def start_compatibility(update: Update, context: ContextTypes.DEFAULT_TYPE
 async def calculate_compatibility(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     data = job.data
-    
+
     compatibility = random.randint(70, 99)
     progress = "🟥" * 10
     progress_bar = progress[:compatibility//10].replace("🟥", "🟩") + progress[compatibility//10:]
-    
+
     descriptions = [
         "Ваши сердца бьются в унисон!",
         "Идеальное сочетание душ!",
@@ -474,7 +478,7 @@ async def calculate_compatibility(context: ContextTypes.DEFAULT_TYPE):
         "Ваша связь особенная и уникальная!",
         "Настоящая любовь, которая преодолеет все преграды!"
     ]
-    
+
     await context.bot.edit_message_text(
         chat_id=data['chat_id'],
         message_id=data['message_id'],
@@ -488,15 +492,16 @@ async def calculate_compatibility(context: ContextTypes.DEFAULT_TYPE):
     )
 
 # ========================
-#  ИНЛАЙН-РЕЖИМ
+# ИНЛАЙН-РЕЖИМ
 # ========================
+
 async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.inline_query.query.lower().strip()
     user = update.inline_query.from_user
-    
+
     register_user(user)
     results = []
-    
+
     if not query:
         for action_name, info in INLINE_ACTIONS.items():
             message_text = f"{info['emoji']} {user.first_name} {action_name}!"
@@ -542,7 +547,7 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
                         reply_markup=reply_markup
                     )
                 )
-    
+
     if not results:
         results.append(
             InlineQueryResultArticle(
@@ -555,48 +560,49 @@ async def handle_inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE
                 )
             )
         )
-    
+
     try:
         await update.inline_query.answer(results, cache_time=0, is_personal=True)
     except Exception as e:
         logger.error(f"Ошибка инлайн-запроса: {str(e)}")
 
 # ========================
-#  КОМАНДЫ С ЮЗЕРНЕЙМОМ
+# КОМАНДЫ С ЮЗЕРНЕЙМОМ
 # ========================
+
 async def send_cute_action_with_username(update: Update, context: ContextTypes.DEFAULT_TYPE, action_type: str, action_text: str):
     user = update.effective_user
-    
+
     if not context.args:
         await update.message.reply_text(
             f"❌ Используйте: /{action_type} @username\n"
             f"Пример: /{action_type} @имя_пользователя"
         )
         return
-    
+
     username = context.args[0].lstrip('@').strip().lower()
     target_id = find_user_id(username)
-    
+
     if not target_id:
         await update.message.reply_text(f"❌ Пользователь @{username} не найден.")
         return
-    
+
     if user.id == target_id:
         await update.message.reply_text(f"😊 Нельзя {action_text.split()[0]} самого себя!")
         return
-    
+
     sender_info = get_user_info(user.id)
     target_info = get_user_info(target_id)
-    
+
     sender_name = sender_info['first_name'] if sender_info else user.first_name
     target_name = target_info['first_name'] if target_info else f"@{username}"
-    
+
     keyboard = [
         [InlineKeyboardButton("💖 Ответить взаимностью", callback_data=f"respond_{action_type}_{user.id}")],
         [InlineKeyboardButton("❌ Отказаться", callback_data=f"reject_{user.id}")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    
+
     try:
         await update.message.reply_text(
             f"💞 {sender_name} {action_text} {target_name}!",
@@ -756,15 +762,16 @@ async def send_sex(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_cute_action_with_username(update, context, "sex", "🛏️ занялся(ась) сексом с")
 
 # ========================
-#  ОБРАБОТЧИКИ КНОПОК
+# ОБРАБОТЧИКИ КНОПОК
 # ========================
+
 async def handle_inline_button_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
+
     user = query.from_user
     data_parts = query.data.split('_')
-    
+
     if len(data_parts) >= 3 and data_parts[0] == "inline":
         action_type = data_parts[2]
         sender_id = int(data_parts[3])
@@ -791,10 +798,10 @@ async def handle_inline_button_response(update: Update, context: ContextTypes.DE
 async def handle_regular_button_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
+
     user = query.from_user
     data_parts = query.data.split('_')
-    
+
     if len(data_parts) >= 3 and data_parts[0] == "respond":
         action_type = data_parts[1]
         sender_id = int(data_parts[2])
@@ -818,12 +825,13 @@ async def handle_regular_button_response(update: Update, context: ContextTypes.D
         )
 
 # ========================
-#  ОСНОВНЫЕ КОМАНДЫ
+# ОСНОВНЫЕ КОМАНДЫ
 # ========================
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     register_user(user)
-    
+
     welcome_text = (
         f"💖 Привет, {user.first_name}!\n\n"
         "Я бот для романтики и нежных чувств! 💕\n\n"
@@ -839,90 +847,91 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "`/compatibility @username` - Совместимость\n"
         "`/help` - Все команды\n\n"
         "💬 *Инлайн-режим:*\n"
-        "Напишите `@{context.bot.username}` в любом чате!"
+        f"Напишите `@{context.bot.username}` в любом чате!"
     )
-    
+
     await update.message.reply_text(welcome_text, parse_mode="Markdown")
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     help_text = (
-        "💖 *Все команды бота*\n\n"
-        "💝 *Основные:*\n"
-        "`/start` - Начать работу\n"
-        "`/heart` - Анимация сердца\n"
-        "`/note @username текст` - Анонимная записка\n"
-        "`/compatibility @username` - Совместимость\n\n"
-        "🎮 *Романтические действия:*\n"
-        "`/kiss @username` - Поцеловать 💋\n"
-        "`/hug @username` - Обнять 🤗\n"
-        "`/pat @username` - Погладить 🖐️\n"
-        "`/cuddle @username` - Прижаться 🫂\n"
-        "`/love @username` - Признаться в любви 💌\n"
-        "`/blush @username` - Смутить 😊\n"
-        "`/smile @username` - Улыбнуться 😄\n"
-        "`/scratch @username` - Почесать 🐾\n"
-        "`/carry @username` - Взять на ручки 👑\n"
-        "`/superhug @username` - Крепко обнять 🫂\n"
-        "`/praise @username` - Похвалить 🌟\n"
-        "`/wink @username` - Подмигнуть 😉\n"
-        "`/tickle @username` - Пощекотать 😂\n"
-        "`/cheek_kiss @username` - Поцеловать в щечку 😚\n"
-        "`/whisper @username` - Шепнуть 🔇\n"
-        "`/dance @username` - Пригласить на танец 💃\n"
-        "`/sing @username` - Спеть серенаду 🎵\n"
-        "`/massage @username` - Сделать массаж 💆\n"
-        "`/cover @username` - Укрыть одеялом 🛏️\n"
-        "`/feed @username` - Накормить 🍓\n"
-        "`/jealous @username` - Показать ревность 💔\n"
-        "`/flirt @username` - Флиртовать 😘\n"
-        "`/care @username` - Позаботиться 🥰\n"
-        "`/protect @username` - Защитить 🛡️\n"
-        "`/admire @username` - Восхищаться 🤩\n"
-        "`/thank @username` - Поблагодарить 🙏\n"
-        "`/forehead_kiss @username` - Поцеловать в лобик 😘\n"
-        "`/hold_hand @username` - Взять за ручку 🤝\n"
-        "`/gaze @username` - Смотреть в глаза 👀\n"
-        "`/surprise @username` - Сделать сюрприз 🎁\n\n"
-        "🔥 *Для взрослых (18+):*\n"
-        "`/caress @username` - Нежно ласкать ✨\n"
-        "`/press @username` - Страстно прижать 🔥\n"
-        "`/tie @username` - Нежно привязать 🎀\n"
-        "`/lay_on_legs @username` - Прилечь на ножки 🦵\n"
-        "`/undress @username` - Нежно раздеть 👗\n"
-        "`/redress @username` - Переодеть в костюм 🎭\n"
-        "`/satisfy @username` - Удовлетворить 💫\n"
-        "`/grope @username` - Нежно лапать ✋\n"
-        "`/bite @username` - Нежно кусать 🦷\n"
-        "`/lick @username` - Нежно лизать 👅\n"
-        "`/tease @username` - Игриво дразнить 😈\n"
-        "`/arouse @username` - Страстно возбуждать 💦\n"
-        "`/fuck @username` - Страстно трахать 🍆\n"
-        "`/suck @username` - Нежно сосать 💦\n"
-        "`/cum @username` - Кончить на 💧\n"
-        "`/sex @username` - Заняться сексом 🛏️\n\n"
-        "💬 *Инлайн-режим:*\n"
-        "Напишите `@{context.bot.username}` в любом чате!"
+        "💖 Все команды бота\n\n"
+        "💝 Основные:\n"
+        "/start - Начать работу\n"
+        "/heart - Анимация сердца\n"
+        "/note @username текст - Анонимная записка\n"
+        "/compatibility @username - Совместимость\n\n"
+        "🎮 Романтические действия:\n"
+        "/kiss @username - Поцеловать 💋\n"
+        "/hug @username - Обнять 🤗\n"
+        "/pat @username - Погладить 🖐️\n"
+        "/cuddle @username - Прижаться 🫂\n"
+        "/love @username - Признаться в любви 💌\n"
+        "/blush @username - Смутить 😊\n"
+        "/smile @username - Улыбнуться 😄\n"
+        "/scratch @username - Почесать 🐾\n"
+        "/carry @username - Взять на ручки 👑\n"
+        "/superhug @username - Крепко обнять 🫂\n"
+        "/praise @username - Похвалить 🌟\n"
+        "/wink @username - Подмигнуть 😉\n"
+        "/tickle @username - Пощекотать 😂\n"
+        "/cheek_kiss @username - Поцеловать в щечку 😚\n"
+        "/whisper @username - Шепнуть 🔇\n"
+        "/dance @username - Пригласить на танец 💃\n"
+        "/sing @username - Спеть серенаду 🎵\n"
+        "/massage @username - Сделать массаж 💆\n"
+        "/cover @username - Укрыть одеялом 🛏️\n"
+        "/feed @username - Накормить 🍓\n"
+        "/jealous @username - Показать ревность 💔\n"
+        "/flirt @username - Флиртовать 😘\n"
+        "/care @username - Позаботиться 🥰\n"
+        "/protect @username - Защитить 🛡️\n"
+        "/admire @username - Восхищаться 🤩\n"
+        "/thank @username - Поблагодарить 🙏\n"
+        "/forehead_kiss @username - Поцеловать в лобик 😘\n"
+        "/hold_hand @username - Взять за ручку 🤝\n"
+        "/gaze @username - Смотреть в глаза 👀\n"
+        "/surprise @username - Сделать сюрприз 🎁\n\n"
+        "🔥 Для взрослых (18+):\n"
+        "/caress @username - Нежно ласкать ✨\n"
+        "/press @username - Страстно прижать 🔥\n"
+        "/tie @username - Нежно привязать 🎀\n"
+        "/lay_on_legs @username - Прилечь на ножки 🦵\n"
+        "/undress @username - Нежно раздеть 👗\n"
+        "/redress @username - Переодеть в костюм 🎭\n"
+        "/satisfy @username - Удовлетворить 💫\n"
+        "/grope @username - Нежно лапать ✋\n"
+        "/bite @username - Нежно кусать 🦷\n"
+        "/lick @username - Нежно лизать 👅\n"
+        "/tease @username - Игриво дразнить 😈\n"
+        "/arouse @username - Страстно возбуждать 💦\n"
+        "/fuck @username - Страстно трахать 🍆\n"
+        "/suck @username - Нежно сосать 💦\n"
+        "/cum @username - Кончить на 💧\n"
+        "/sex @username - Заняться сексом 🛏️\n\n"
+        "💬 Инлайн-режим:\n"
+        f"Напишите @{context.bot.username} в любом чате!"
     )
-    
+
     await update.message.reply_text(help_text, parse_mode="Markdown")
 
 # ========================
-#  ЗАПУСК БОТА
+# ЗАПУСК БОТА
 # ========================
+
 def main():
     # Инициализация базы данных
     init_db()
-    
+
     # Создание приложения бота
     application = Application.builder().token(os.getenv('BOT_TOKEN')).build()
-    
+
     # Обработчики основных команд
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("heart", send_heart))
     application.add_handler(CommandHandler("note", start_anonymous_note))
     application.add_handler(CommandHandler("compatibility", start_compatibility))
-    
+
     # Обработчики романтических действий
     application.add_handler(CommandHandler("kiss", send_kiss))
     application.add_handler(CommandHandler("hug", send_hug))
@@ -954,7 +963,7 @@ def main():
     application.add_handler(CommandHandler("hold_hand", send_hold_hand))
     application.add_handler(CommandHandler("gaze", send_gaze))
     application.add_handler(CommandHandler("surprise", send_surprise))
-    
+
     # Обработчики 18+ действий
     application.add_handler(CommandHandler("caress", send_caress))
     application.add_handler(CommandHandler("press", send_press))
@@ -972,15 +981,15 @@ def main():
     application.add_handler(CommandHandler("suck", send_suck))
     application.add_handler(CommandHandler("cum", send_cum))
     application.add_handler(CommandHandler("sex", send_sex))
-    
+
     # Обработчики кнопок
     application.add_handler(CallbackQueryHandler(handle_heart_response, pattern="^heart_"))
     application.add_handler(CallbackQueryHandler(handle_inline_button_response, pattern="^inline_"))
     application.add_handler(CallbackQueryHandler(handle_regular_button_response, pattern="^(respond|reject)_"))
-    
+
     # Инлайн-режим
     application.add_handler(InlineQueryHandler(handle_inline_query))
-    
+
     logger.info("Бот запущен со всеми взаимодействиями!")
     application.run_polling()
 
