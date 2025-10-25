@@ -37,15 +37,55 @@ HEART_ANIMATION_FRAMES = [
     "💗", "💓", "💞", "💕", "💘", "💝", "💟"
 ]
 
-# Действия для инлайн-режима
+# Все взаимодействия с иконками
 INLINE_ACTIONS = {
     "поцеловать": {"emoji": "💋", "description": "Послать нежный поцелуй", "action": "kiss"},
     "обнять": {"emoji": "🤗", "description": "Отправить теплые объятия", "action": "hug"}, 
     "погладить": {"emoji": "🖐️", "description": "Погладить по головке", "action": "pat"},
     "прижаться": {"emoji": "🫂", "description": "Прижаться и обниматься", "action": "cuddle"},
     "люблю": {"emoji": "💌", "description": "Признаться в любви", "action": "love"},
+    "смутить": {"emoji": "😊", "description": "Вызвать милое смущение", "action": "blush"},
     "улыбнуться": {"emoji": "😄", "description": "Подарить улыбку", "action": "smile"},
+    "почесать": {"emoji": "🐾", "description": "Почесать за ушком", "action": "scratch"},
+    "взять на руки": {"emoji": "👑", "description": "Взять на ручки", "action": "carry"},
+    "крепко обнять": {"emoji": "🫂", "description": "Крепкие объятия", "action": "superhug"},
+    "похвалить": {"emoji": "🌟", "description": "Похвалить", "action": "praise"},
     "подмигнуть": {"emoji": "😉", "description": "Подмигнуть игриво", "action": "wink"},
+    "пощекотать": {"emoji": "😂", "description": "Пощекотать до смеха", "action": "tickle"},
+    "поцеловать в щечку": {"emoji": "😚", "description": "Нежный поцелуй в щечку", "action": "cheek_kiss"},
+    "шепнуть": {"emoji": "🔇", "description": "Шепнуть что-то на ушко", "action": "whisper"},
+    "танцевать": {"emoji": "💃", "description": "Пригласить на танец", "action": "dance"},
+    "спеть": {"emoji": "🎵", "description": "Спеть серенаду", "action": "sing"},
+    "сделать массаж": {"emoji": "💆", "description": "Сделать расслабляющий массаж", "action": "massage"},
+    "укрыть": {"emoji": "🛏️", "description": "Укрыть одеялом", "action": "cover"},
+    "накормить": {"emoji": "🍓", "description": "Накормить чем-то вкусным", "action": "feed"},
+    "ревновать": {"emoji": "💔", "description": "Показать ревность", "action": "jealous"},
+    "флиртовать": {"emoji": "😘", "description": "Начать флиртовать", "action": "flirt"},
+    "заботиться": {"emoji": "🥰", "description": "Показать заботу", "action": "care"},
+    "защищать": {"emoji": "🛡️", "description": "Встать на защиту", "action": "protect"},
+    "восхищаться": {"emoji": "🤩", "description": "Выразить восхищение", "action": "admire"},
+    "благодарить": {"emoji": "🙏", "description": "Поблагодарить", "action": "thank"},
+    "целовать в лоб": {"emoji": "😘", "description": "Нежно поцеловать в лобик", "action": "forehead_kiss"},
+    "держать за руку": {"emoji": "🤝", "description": "Взять за ручку", "action": "hold_hand"},
+    "смотреть в глаза": {"emoji": "👀", "description": "Глубоко смотреть в глаза", "action": "gaze"},
+    "сделать сюрприз": {"emoji": "🎁", "description": "Сделать приятный сюрприз", "action": "surprise"},
+    # 18+ взаимодействия
+    "ласкать": {"emoji": "✨", "description": "Нежно ласкать", "action": "caress"},
+    "прижать": {"emoji": "🔥", "description": "Страстно прижать", "action": "press"},
+    "привязать": {"emoji": "🎀", "description": "Нежно привязать", "action": "tie"},
+    "прилечь на ножки": {"emoji": "🦵", "description": "Прилечь на ножки", "action": "lay_on_legs"},
+    "раздеть": {"emoji": "👗", "description": "Нежно раздеть", "action": "undress"},
+    "переодеть": {"emoji": "🎭", "description": "Переодеть в костюм", "action": "redress"},
+    "удовлетворить": {"emoji": "💫", "description": "Удовлетворить", "action": "satisfy"},
+    "лапать": {"emoji": "✋", "description": "Нежно лапать", "action": "grope"},
+    "кусать": {"emoji": "🦷", "description": "Нежно кусать", "action": "bite"},
+    "лизать": {"emoji": "👅", "description": "Нежно лизать", "action": "lick"},
+    "дразнить": {"emoji": "😈", "description": "Игриво дразнить", "action": "tease"},
+    "возбуждать": {"emoji": "💦", "description": "Страстно возбуждать", "action": "arouse"},
+    "трахнуть": {"emoji": "🍆", "description": "Страстно трахнуть", "action": "fuck"},
+    "отсосать": {"emoji": "💦", "description": "Нежно отсосать", "action": "suck"},
+    "кончить": {"emoji": "💧", "description": "Кончить на/в", "action": "cum"},
+    "секс": {"emoji": "🛏️", "description": "Заняться сексом", "action": "sex"},
     "сердце": {"emoji": "❤️", "description": "Анимация сердца", "action": "heart"},
     "совместимость": {"emoji": "💑", "description": "Проверить совместимость", "action": "compatibility"},
     "анонимка": {"emoji": "📝", "description": "Отправить анонимную записку", "action": "anonymous_note"}
@@ -57,8 +97,48 @@ ACTION_TEXTS = {
     "pat": "🖐️ погладил(а)",
     "cuddle": "🫂 прижался(ась) к",
     "love": "💌 признался(ась) в любви",
+    "blush": "😊 смутил(а)",
     "smile": "😄 улыбнулся(ась)",
-    "wink": "😉 подмигнул(а)"
+    "scratch": "🐾 почесал(а)",
+    "carry": "👑 взял(а) на ручки",
+    "superhug": "🫂 крепко обнял(а)",
+    "praise": "🌟 похвалил(а)",
+    "wink": "😉 подмигнул(а)",
+    "tickle": "😂 пощекотал(а)",
+    "cheek_kiss": "😚 поцеловал(а) в щечку",
+    "whisper": "🔇 прошептал(а) на ушко",
+    "dance": "💃 пригласил(а) на танец",
+    "sing": "🎵 спел(а) серенаду для",
+    "massage": "💆 сделал(а) массаж",
+    "cover": "🛏️ укрыл(а) одеялом",
+    "feed": "🍓 накормил(а)",
+    "jealous": "💔 показал(а) ревность к",
+    "flirt": "😘 начал(а) флиртовать с",
+    "care": "🥰 позаботился(ась) о",
+    "protect": "🛡️ встал(а) на защиту",
+    "admire": "🤩 восхищается",
+    "thank": "🙏 поблагодарил(а)",
+    "forehead_kiss": "😘 поцеловал(а) в лобик",
+    "hold_hand": "🤝 взял(а) за ручку",
+    "gaze": "👀 глубоко смотрит в глаза",
+    "surprise": "🎁 сделал(а) сюрприз для",
+    # 18+ тексты
+    "caress": "✨ нежно ласкает",
+    "press": "🔥 страстно прижал(а)",
+    "tie": "🎀 нежно привязал(а)",
+    "lay_on_legs": "🦵 прилёг(ла) на ножки",
+    "undress": "👗 нежно раздел(а)",
+    "redress": "🎭 переодел(а) в костюм",
+    "satisfy": "💫 удовлетворил(а)",
+    "grope": "✋ нежно лапает",
+    "bite": "🦷 нежно кусает",
+    "lick": "👅 нежно лижет",
+    "tease": "😈 игриво дразнит",
+    "arouse": "💦 страстно возбуждает",
+    "fuck": "🍆 страстно трахает",
+    "suck": "💦 нежно сосет",
+    "cum": "💧 кончил(а) на",
+    "sex": "🛏️ занялся(ась) сексом с"
 }
 
 # Глобальные переменные
@@ -535,7 +615,7 @@ async def send_cute_action_with_username(update: Update, context: ContextTypes.D
     except Exception as e:
         logger.error(f"Ошибка отправки действия: {str(e)}")
 
-# Обработчики команд
+# Обработчики для всех действий
 async def send_kiss(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_cute_action_with_username(update, context, "kiss", "💋 поцеловал(а)")
 
@@ -551,11 +631,129 @@ async def send_cuddle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def send_love(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_cute_action_with_username(update, context, "love", "💌 признался(ась) в любви")
 
+async def send_blush(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "blush", "😊 смутил(а)")
+
 async def send_smile(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_cute_action_with_username(update, context, "smile", "😄 улыбнулся(ась)")
 
+async def send_scratch(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "scratch", "🐾 почесал(а)")
+
+async def send_carry(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "carry", "👑 взял(а) на ручки")
+
+async def send_superhug(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "superhug", "🫂 крепко обнял(а)")
+
+async def send_praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "praise", "🌟 похвалил(а)")
+
 async def send_wink(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_cute_action_with_username(update, context, "wink", "😉 подмигнул(а)")
+
+async def send_tickle(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "tickle", "😂 пощекотал(а)")
+
+async def send_cheek_kiss(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "cheek_kiss", "😚 поцеловал(а) в щечку")
+
+async def send_whisper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "whisper", "🔇 прошептал(а) на ушко")
+
+async def send_dance(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "dance", "💃 пригласил(а) на танец")
+
+async def send_sing(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "sing", "🎵 спел(а) серенаду для")
+
+async def send_massage(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "massage", "💆 сделал(а) массаж")
+
+async def send_cover(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "cover", "🛏️ укрыл(а) одеялом")
+
+async def send_feed(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "feed", "🍓 накормил(а)")
+
+async def send_jealous(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "jealous", "💔 показал(а) ревность к")
+
+async def send_flirt(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "flirt", "😘 начал(а) флиртовать с")
+
+async def send_care(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "care", "🥰 позаботился(ась) о")
+
+async def send_protect(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "protect", "🛡️ встал(а) на защиту")
+
+async def send_admire(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "admire", "🤩 восхищается")
+
+async def send_thank(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "thank", "🙏 поблагодарил(а)")
+
+async def send_forehead_kiss(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "forehead_kiss", "😘 поцеловал(а) в лобик")
+
+async def send_hold_hand(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "hold_hand", "🤝 взял(а) за ручку")
+
+async def send_gaze(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "gaze", "👀 глубоко смотрит в глаза")
+
+async def send_surprise(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "surprise", "🎁 сделал(а) сюрприз для")
+
+# 18+ команды
+async def send_caress(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "caress", "✨ нежно ласкает")
+
+async def send_press(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "press", "🔥 страстно прижал(а)")
+
+async def send_tie(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "tie", "🎀 нежно привязал(а)")
+
+async def send_lay_on_legs(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "lay_on_legs", "🦵 прилёг(ла) на ножки")
+
+async def send_undress(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "undress", "👗 нежно раздел(а)")
+
+async def send_redress(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "redress", "🎭 переодел(а) в костюм")
+
+async def send_satisfy(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "satisfy", "💫 удовлетворил(а)")
+
+async def send_grope(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "grope", "✋ нежно лапает")
+
+async def send_bite(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "bite", "🦷 нежно кусает")
+
+async def send_lick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "lick", "👅 нежно лижет")
+
+async def send_tease(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "tease", "😈 игриво дразнит")
+
+async def send_arouse(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "arouse", "💦 страстно возбуждает")
+
+async def send_fuck(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "fuck", "🍆 страстно трахает")
+
+async def send_suck(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "suck", "💦 нежно сосет")
+
+async def send_cum(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "cum", "💧 кончил(а) на")
+
+async def send_sex(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_cute_action_with_username(update, context, "sex", "🛏️ занялся(ась) сексом с")
 
 # ========================
 #  ОБРАБОТЧИКИ КНОПОК
@@ -631,18 +829,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Я бот для романтики и нежных чувств! 💕\n\n"
         "✨ *Что я умею:*\n"
         "• Анимированные признания в любви ❤️\n"
-        "• Отправка милых действий с кнопками\n"
+        "• 40+ романтических действий\n"
         "• Анонимные записки 💌\n"
-        "• Проверка совместимости 💑\n\n"
+        "• Проверка совместимости 💑\n"
+        "• Интерактивные кнопки ответа\n\n"
         "💝 *Основные команды:*\n"
         "`/heart` - Анимация сердца\n"
         "`/note @username текст` - Анонимная записка\n"
-        "`/compatibility @username` - Совместимость\n\n"
-        "🎮 *Действия:*\n"
-        "`/kiss @username` - Поцеловать\n"
-        "`/hug @username` - Обнять\n"
-        "`/pat @username` - Погладить\n"
-        "`/love @username` - Признаться в любви\n\n"
+        "`/compatibility @username` - Совместимость\n"
+        "`/help` - Все команды\n\n"
         "💬 *Инлайн-режим:*\n"
         "Напишите `@{context.bot.username}` в любом чате!"
     )
@@ -651,7 +846,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     help_text = (
-        "💖 *Помощь по командам*\n\n"
+        "💖 *Все команды бота*\n\n"
         "💝 *Основные:*\n"
         "`/start` - Начать работу\n"
         "`/heart` - Анимация сердца\n"
@@ -663,30 +858,53 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "`/pat @username` - Погладить 🖐️\n"
         "`/cuddle @username` - Прижаться 🫂\n"
         "`/love @username` - Признаться в любви 💌\n"
+        "`/blush @username` - Смутить 😊\n"
         "`/smile @username` - Улыбнуться 😄\n"
-        "`/wink @username` - Подмигнуть 😉\n\n"
+        "`/scratch @username` - Почесать 🐾\n"
+        "`/carry @username` - Взять на ручки 👑\n"
+        "`/superhug @username` - Крепко обнять 🫂\n"
+        "`/praise @username` - Похвалить 🌟\n"
+        "`/wink @username` - Подмигнуть 😉\n"
+        "`/tickle @username` - Пощекотать 😂\n"
+        "`/cheek_kiss @username` - Поцеловать в щечку 😚\n"
+        "`/whisper @username` - Шепнуть 🔇\n"
+        "`/dance @username` - Пригласить на танец 💃\n"
+        "`/sing @username` - Спеть серенаду 🎵\n"
+        "`/massage @username` - Сделать массаж 💆\n"
+        "`/cover @username` - Укрыть одеялом 🛏️\n"
+        "`/feed @username` - Накормить 🍓\n"
+        "`/jealous @username` - Показать ревность 💔\n"
+        "`/flirt @username` - Флиртовать 😘\n"
+        "`/care @username` - Позаботиться 🥰\n"
+        "`/protect @username` - Защитить 🛡️\n"
+        "`/admire @username` - Восхищаться 🤩\n"
+        "`/thank @username` - Поблагодарить 🙏\n"
+        "`/forehead_kiss @username` - Поцеловать в лобик 😘\n"
+        "`/hold_hand @username` - Взять за ручку 🤝\n"
+        "`/gaze @username` - Смотреть в глаза 👀\n"
+        "`/surprise @username` - Сделать сюрприз 🎁\n\n"
+        "🔥 *Для взрослых (18+):*\n"
+        "`/caress @username` - Нежно ласкать ✨\n"
+        "`/press @username` - Страстно прижать 🔥\n"
+        "`/tie @username` - Нежно привязать 🎀\n"
+        "`/lay_on_legs @username` - Прилечь на ножки 🦵\n"
+        "`/undress @username` - Нежно раздеть 👗\n"
+        "`/redress @username` - Переодеть в костюм 🎭\n"
+        "`/satisfy @username` - Удовлетворить 💫\n"
+        "`/grope @username` - Нежно лапать ✋\n"
+        "`/bite @username` - Нежно кусать 🦷\n"
+        "`/lick @username` - Нежно лизать 👅\n"
+        "`/tease @username` - Игриво дразнить 😈\n"
+        "`/arouse @username` - Страстно возбуждать 💦\n"
+        "`/fuck @username` - Страстно трахать 🍆\n"
+        "`/suck @username` - Нежно сосать 💦\n"
+        "`/cum @username` - Кончить на 💧\n"
+        "`/sex @username` - Заняться сексом 🛏️\n\n"
         "💬 *Инлайн-режим:*\n"
         "Напишите `@{context.bot.username}` в любом чате!"
     )
     
     await update.message.reply_text(help_text, parse_mode="Markdown")
-
-# ========================
-#  HTTP СЕРВЕР ДЛЯ UPTIMEROBOT
-# ========================
-from aiohttp import web
-import threading
-
-async def handle_health_check(request):
-    return web.Response(text="Bot is running!")
-
-def run_http_server():
-    app = web.Application()
-    app.router.add_get('/', handle_health_check)
-    app.router.add_get('/health', handle_health_check)
-    
-    port = int(os.environ.get('PORT', 8080))
-    web.run_app(app, host='0.0.0.0', port=port)
 
 # ========================
 #  ЗАПУСК БОТА
@@ -695,28 +913,65 @@ def main():
     # Инициализация базы данных
     init_db()
     
-    # Запуск HTTP сервера в отдельном потоке
-    http_thread = threading.Thread(target=run_http_server, daemon=True)
-    http_thread.start()
-    
     # Создание приложения бота
     application = Application.builder().token(os.getenv('BOT_TOKEN')).build()
     
-    # Обработчики команд
+    # Обработчики основных команд
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("heart", send_heart))
     application.add_handler(CommandHandler("note", start_anonymous_note))
     application.add_handler(CommandHandler("compatibility", start_compatibility))
     
-    # Обработчики действий
+    # Обработчики романтических действий
     application.add_handler(CommandHandler("kiss", send_kiss))
     application.add_handler(CommandHandler("hug", send_hug))
     application.add_handler(CommandHandler("pat", send_pat))
     application.add_handler(CommandHandler("cuddle", send_cuddle))
     application.add_handler(CommandHandler("love", send_love))
+    application.add_handler(CommandHandler("blush", send_blush))
     application.add_handler(CommandHandler("smile", send_smile))
+    application.add_handler(CommandHandler("scratch", send_scratch))
+    application.add_handler(CommandHandler("carry", send_carry))
+    application.add_handler(CommandHandler("superhug", send_superhug))
+    application.add_handler(CommandHandler("praise", send_praise))
     application.add_handler(CommandHandler("wink", send_wink))
+    application.add_handler(CommandHandler("tickle", send_tickle))
+    application.add_handler(CommandHandler("cheek_kiss", send_cheek_kiss))
+    application.add_handler(CommandHandler("whisper", send_whisper))
+    application.add_handler(CommandHandler("dance", send_dance))
+    application.add_handler(CommandHandler("sing", send_sing))
+    application.add_handler(CommandHandler("massage", send_massage))
+    application.add_handler(CommandHandler("cover", send_cover))
+    application.add_handler(CommandHandler("feed", send_feed))
+    application.add_handler(CommandHandler("jealous", send_jealous))
+    application.add_handler(CommandHandler("flirt", send_flirt))
+    application.add_handler(CommandHandler("care", send_care))
+    application.add_handler(CommandHandler("protect", send_protect))
+    application.add_handler(CommandHandler("admire", send_admire))
+    application.add_handler(CommandHandler("thank", send_thank))
+    application.add_handler(CommandHandler("forehead_kiss", send_forehead_kiss))
+    application.add_handler(CommandHandler("hold_hand", send_hold_hand))
+    application.add_handler(CommandHandler("gaze", send_gaze))
+    application.add_handler(CommandHandler("surprise", send_surprise))
+    
+    # Обработчики 18+ действий
+    application.add_handler(CommandHandler("caress", send_caress))
+    application.add_handler(CommandHandler("press", send_press))
+    application.add_handler(CommandHandler("tie", send_tie))
+    application.add_handler(CommandHandler("lay_on_legs", send_lay_on_legs))
+    application.add_handler(CommandHandler("undress", send_undress))
+    application.add_handler(CommandHandler("redress", send_redress))
+    application.add_handler(CommandHandler("satisfy", send_satisfy))
+    application.add_handler(CommandHandler("grope", send_grope))
+    application.add_handler(CommandHandler("bite", send_bite))
+    application.add_handler(CommandHandler("lick", send_lick))
+    application.add_handler(CommandHandler("tease", send_tease))
+    application.add_handler(CommandHandler("arouse", send_arouse))
+    application.add_handler(CommandHandler("fuck", send_fuck))
+    application.add_handler(CommandHandler("suck", send_suck))
+    application.add_handler(CommandHandler("cum", send_cum))
+    application.add_handler(CommandHandler("sex", send_sex))
     
     # Обработчики кнопок
     application.add_handler(CallbackQueryHandler(handle_heart_response, pattern="^heart_"))
@@ -726,7 +981,7 @@ def main():
     # Инлайн-режим
     application.add_handler(InlineQueryHandler(handle_inline_query))
     
-    logger.info("Бот запущен с HTTP сервером для UptimeRobot!")
+    logger.info("Бот запущен со всеми взаимодействиями!")
     application.run_polling()
 
 if __name__ == '__main__':
